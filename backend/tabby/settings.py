@@ -144,6 +144,7 @@ AUTHENTICATION_BACKENDS = (
 )
 
 SOCIAL_AUTH_GITHUB_SCOPE = ["read:user", "user:email"]
+SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
 SOCIAL_AUTH_PIPELINE = (
     "social_core.pipeline.social_auth.social_details",
     "social_core.pipeline.social_auth.social_uid",
