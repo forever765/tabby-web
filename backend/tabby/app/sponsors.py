@@ -1,3 +1,4 @@
+import os
 from django.conf import settings
 from django.core.cache import cache
 from gql import Client, gql
@@ -12,6 +13,10 @@ CACHE_KEY = "cached-sponsors:%s"
 
 
 def check_is_sponsor(user: User) -> bool:
+    # 如果设置了SKIP_GITHUB_SPONSOR_CHECK环境变量，则跳过赞助者检查
+    if os.getenv("SKIP_GITHUB_SPONSOR_CHECK", "").lower() == "true":
+        return False
+    
     try:
         token = user.social_auth.get(provider="github").extra_data.get("access_token")
     except UserSocialAuth.DoesNotExist:
@@ -81,6 +86,10 @@ def check_is_sponsor(user: User) -> bool:
 
 
 def check_is_sponsor_cached(user: User) -> bool:
+    # 如果设置了SKIP_GITHUB_SPONSOR_CHECK环境变量，则跳过赞助者检查
+    if os.getenv("SKIP_GITHUB_SPONSOR_CHECK", "").lower() == "true":
+        return False
+        
     cache_key = CACHE_KEY % user.id
     if not cache.get(cache_key):
         cache.set(cache_key, check_is_sponsor(user), timeout=30)
