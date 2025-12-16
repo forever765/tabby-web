@@ -1,5 +1,40 @@
 # Tabby Web
 
+> Tabby-Web is works!
+
+## HOW TO USE
+now the project works for python3.12 (ubuntu24.04)
+1. build frontend
+    ```
+    cd frontend
+    yarn
+    yarn run build
+    ```
+2. copy frontend dist to backend  
+`scp -r build/ ../backend/public`
+3. prepare env  
+    `SKIP_GITHUB_SPONSOR_CHECK` for China Mainland Network.
+    ```
+    DATABASE_URL="postgresql://username:passwd@127.0.0.1:5432/tabby_web"
+    SOCIAL_AUTH_GITHUB_KEY="XXX"
+    SOCIAL_AUTH_GITHUB_SECRET="XXX" 
+    APP_DIST_STORAGE="file://app-dist"
+    PORT=8000 
+    SKIP_GITHUB_SPONSOR_CHECK=True
+    ```
+4. run backend
+    ```
+    cd backend
+    python3 -m venv venv
+    source venv/bin/activate
+    poetry install
+    ./manage.py migrate
+    ./manage.py add_version 1.0.197-nightly.1
+    poetry run gunicorn
+    ```
+
+---
+
 ## Note on project status
 
 > [!IMPORTANT]  
